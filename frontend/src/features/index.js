@@ -8,6 +8,10 @@ import MainNavigation from "./navigation/MainNavigation/MainNavigation";
 import NavLinks from "./navigation/NavLinks/NavLinks";
 import SideDrawer from "./navigation/SideDrawer/SideDrawer";
 
+// Places
+import PlaceList from "./places/PlaceList/PlaceList";
+import PlaceItem from "./places/PlaceItem/PlaceItem";
+
 export {
   UsersList,
   UserItem,
@@ -15,4 +19,6 @@ export {
   MainNavigation,
   NavLinks,
   SideDrawer,
+  PlaceItem,
+  PlaceList,
 };

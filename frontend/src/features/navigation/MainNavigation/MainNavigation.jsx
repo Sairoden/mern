@@ -11,7 +11,7 @@ import { MainHeader, NavLinks, SideDrawer } from "../../index";
 // UI Components
 import { Backdrop } from "../../../ui";
 
-function MainNavigation(props) {
+function MainNavigation() {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
   const openDrawerHandler = () => {
