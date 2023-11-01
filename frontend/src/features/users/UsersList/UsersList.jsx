@@ -4,11 +4,16 @@ import "./UsersList.css";
 // Features Components
 import { UserItem } from "../../index";
 
+// UI Components
+import { Card } from "../../../ui";
+
 function UsersList({ items }) {
   if (items.length === 0)
     return (
       <div className="center">
-        <h2>No users found</h2>
+        <Card>
+          <h2>No users found</h2>
+        </Card>
       </div>
     );
 

@@ -8,19 +8,27 @@ import {
 // Pages
 import { Users, NewPlace } from "./pages";
 
+// Features Components
+import { MainNavigation } from "./features";
+
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <Users />,
-    },
-    {
-      path: "/places/new",
-      element: <NewPlace />,
-    },
-    {
-      path: "*",
-      element: <Navigate to="/" replace />,
+      element: <MainNavigation />,
+      children: [
+        {
+          path: "/",
+          element: <Users />,
+        },
+        {
+          path: "/places/new",
+          element: <NewPlace />,
+        },
+        {
+          path: "*",
+          element: <Navigate to="/" replace />,
+        },
+      ],
     },
   ]);
 
@@ -29,4 +37,4 @@ function App() {
 
 export default App;
 
-// 41
+// 45
