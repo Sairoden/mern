@@ -2,7 +2,7 @@
 import "./PlaceItem.css";
 
 // UI Components
-import { Card } from "../../../ui";
+import { Card, Button } from "../../../ui";
 
 function PlaceItem({
   id,
@@ -29,9 +29,9 @@ function PlaceItem({
         </div>
 
         <div className="place-item__actions">
-          <button>VIEW ON MAP</button>
-          <button>EDIT</button>
-          <button>DELETE</button>
+          <Button inverse>VIEW ON MAP</Button>
+          <Button to={`/places/${id}`}>EDIT</Button>
+          <Button danger >DELETE</Button>
         </div>
       </Card>
     </li>
