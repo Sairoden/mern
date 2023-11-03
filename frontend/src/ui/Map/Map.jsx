@@ -12,7 +12,7 @@ function Map({ className, style, center, zoom }) {
         zoom={zoom}
         scrollWheelZoom={false}
         className={`map ${className}`}
-        style={`${style}`}
+        style={style}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -1,5 +1,8 @@
+// UI Components
+import { PlaceForm } from "../ui";
+
 function NewPlace() {
-  return <div>NewPlace works</div>;
+  return <PlaceForm />;
 }
 
 export default NewPlace;
