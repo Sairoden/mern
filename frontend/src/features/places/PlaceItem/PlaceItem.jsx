@@ -5,7 +5,7 @@ import { useState } from "react";
 import "./PlaceItem.css";
 
 // UI Components
-import { Card, Button, Modal } from "../../../ui";
+import { Card, Button, Modal, Map } from "../../../ui";
 
 function PlaceItem({
   id,
@@ -32,7 +32,7 @@ function PlaceItem({
         footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
       >
         <div className="map-container">
-          <h2>THE MAP!</h2>
+          <Map center={[coordinates.lat, coordinates.lng]} zoom={13} />
         </div>
       </Modal>
       <li className="place-item">

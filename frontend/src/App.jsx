@@ -11,6 +11,8 @@ import { Users, NewPlace, UserPlaces } from "./pages";
 // Features Components
 import { MainNavigation } from "./features";
 
+import Map from "./ui/Map/Map";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -29,6 +31,10 @@ function App() {
           element: <UserPlaces />,
         },
         {
+          path: "/map",
+          element: <Map />,
+        },
+        {
           path: "*",
           element: <Navigate to="/" replace />,
         },
@@ -41,4 +47,4 @@ function App() {
 
 export default App;
 
-// 51
+// 55
