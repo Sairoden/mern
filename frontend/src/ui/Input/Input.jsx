@@ -4,10 +4,20 @@ import { useReducer } from "react";
 // Styles
 import "./Input.css";
 
+// Utilities
+import { validate } from "../../utils";
+
 const inputReducer = (state, action) => {
   switch (action.type) {
     case "CHANGE":
-      return { ...state, value: action.payload, isValid: true };
+      return {
+        ...state,
+        value: action.payload,
+        isValid: validate(action.payload, action.validators),
+      };
+
+    case "TOUCH":
+      return { ...state, isTouched: true };
 
     default:
       return state;
@@ -17,16 +27,25 @@ const inputReducer = (state, action) => {
 const INITIAL_STATE = {
   value: "",
   isValid: false,
+  isTouched: false,
 };
 
 function Input(props, { id, rows, placeholder, type }) {
-  const [{ value, isValid }, dispatch] = useReducer(
+  const [{ value, isValid, isTouched }, dispatch] = useReducer(
     inputReducer,
     INITIAL_STATE
   );
 
   const changeHandler = e => {
-    dispatch({ type: "CHANGE", payload: e.target.value });
+    dispatch({
+      type: "CHANGE",
+      payload: e.target.value,
+      validators: props.validators,
+    });
+  };
+
+  const touchHandler = () => {
+    dispatch({ type: "TOUCH" });
   };
 
   const element =
@@ -36,6 +55,7 @@ function Input(props, { id, rows, placeholder, type }) {
         type={type}
         placeholder={placeholder}
         onChange={changeHandler}
+        onBlur={touchHandler}
         value={value}
       />
     ) : (
@@ -43,15 +63,20 @@ function Input(props, { id, rows, placeholder, type }) {
         id={id}
         rows={rows || 3}
         onChange={changeHandler}
+        onBlur={touchHandler}
         value={value}
       />
     );
 
   return (
-    <div className={`form-control ${!isValid && "form-control--invalid"}`}>
+    <div
+      className={`form-control ${
+        !isValid && isTouched && "form-control--invalid"
+      }`}
+    >
       <label htmlFor={id}>{props.label}</label>
       {element}
-      {!isValid && <p>{props.errorText}</p>}
+      {!isValid && isTouched && <p>{props.errorText}</p>}
     </div>
   );
 }

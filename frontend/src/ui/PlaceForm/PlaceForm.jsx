@@ -4,6 +4,9 @@ import "./PlaceForm.css";
 // UI Components
 import { Input } from "../index";
 
+// Utilities
+import { VALIDATOR_REQUIRE } from "../../utils";
+
 function PlaceForm() {
   return (
     <form className="place-form">
@@ -11,7 +14,7 @@ function PlaceForm() {
         type="text"
         label="Title"
         element="input"
-        validators={[]}
+        validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid title"
       />
     </form>
