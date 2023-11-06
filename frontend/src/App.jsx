@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 // Pages
-import { Users, NewPlace, UserPlaces } from "./pages";
+import { Users, NewPlace, UserPlaces, UpdatePlace } from "./pages";
 
 // Features Components
 import { MainNavigation } from "./features";
@@ -33,6 +33,10 @@ function App() {
         {
           path: "/map",
           element: <Map />,
+        },
+        {
+          path: "/places/:placeId",
+          element: <UpdatePlace />,
         },
         {
           path: "*",

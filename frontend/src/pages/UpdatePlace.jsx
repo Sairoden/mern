@@ -1,0 +1,82 @@
+// React & Libraries
+import { useParams } from "react-router-dom";
+
+// UI Components
+import { Input, Button } from "../ui";
+
+// Utilities
+import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../utils";
+
+const DUMMY_PLACES = [
+  {
+    id: "p1",
+    title: "Manila",
+    description: "Stinky place and I don't want to work here",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/b/b4/Makati_City_Lights2_%28Jopet_Sy%29_-_Flickr.jpg",
+    address: "Manila, Metro Manila",
+    location: {
+      lat: 14.5973628,
+      lng: 120.98013,
+    },
+    creator: "u1",
+  },
+  {
+    id: "p2",
+    title: "Manila",
+    description: "Stinky place and I don't want to work here",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/f/f1/Manila_Harbour_View_by_night_%28Thomas_Yie%29_-_Flickr.jpg",
+    address: "Manila, Metro Manila",
+    location: {
+      lat: 14.5973628,
+      lng: 120.98013,
+    },
+    creator: "u2",
+  },
+];
+
+function UpdatePlace() {
+  const { placeId } = useParams();
+
+  const identifiedPlace = DUMMY_PLACES.find(place => place.id === placeId);
+
+  if (!identifiedPlace)
+    return (
+      <div className="center">
+        <h2>Could not find place!</h2>;
+      </div>
+    );
+
+  return (
+    <form>
+      <Input
+        id="address"
+        type="text"
+        element="input"
+        label="Title"
+        validators={[VALIDATOR_REQUIRE()]}
+        errorText="Please enter a valid title."
+        onInput={() => {}}
+        value={identifiedPlace.title}
+        valid={true}
+      />
+      <Input
+        id="description"
+        element="textarea"
+        label="Description"
+        validators={[VALIDATOR_MINLENGTH(5)]}
+        errorText="Please enter a valid description (min. 5 characters)."
+        onInput={() => {}}
+        value={identifiedPlace.title}
+        valid={true}
+      />
+
+      <Button type="submit" disabled={true}>
+        UPDATE PLACE
+      </Button>
+    </form>
+  );
+}
+
+export default UpdatePlace;
