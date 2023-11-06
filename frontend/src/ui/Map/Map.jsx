@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 // Styles
 import "./Map.css";
 
-function Map({ className, style, center, zoom }) {
+function Map({ className, style, center, zoom, address }) {
   return (
     <div className="mapContainer">
       <MapContainer
@@ -19,9 +19,7 @@ function Map({ className, style, center, zoom }) {
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
         <Marker position={center}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
+          <Popup>{address}</Popup>
         </Marker>
       </MapContainer>
     </div>

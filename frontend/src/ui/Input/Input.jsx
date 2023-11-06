@@ -1,5 +1,5 @@
 // React & Libraries
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 
 // Styles
 import "./Input.css";
@@ -30,11 +30,17 @@ const INITIAL_STATE = {
   isTouched: false,
 };
 
-function Input(props, { id, rows, placeholder, type }) {
+function Input(props) {
   const [{ value, isValid, isTouched }, dispatch] = useReducer(
     inputReducer,
     INITIAL_STATE
   );
+
+  const { onInput, id, rows, placeholder, type } = props;
+
+  useEffect(() => {
+    onInput(id, value, isValid);
+  }, [id, isValid, onInput, value]);
 
   const changeHandler = e => {
     dispatch({

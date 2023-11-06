@@ -32,7 +32,11 @@ function PlaceItem({
         footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
       >
         <div className="map-container">
-          <Map center={[coordinates.lat, coordinates.lng]} zoom={13} />
+          <Map
+            address={address}
+            center={[coordinates.lat, coordinates.lng]}
+            zoom={13}
+          />
         </div>
       </Modal>
       <li className="place-item">
