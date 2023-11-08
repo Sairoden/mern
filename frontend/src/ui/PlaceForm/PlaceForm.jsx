@@ -48,6 +48,10 @@ const INITIAL_STATE = {
       value: "",
       isValid: false,
     },
+    address: {
+      value: "",
+      isValid: false,
+    },
   },
   isValid: false,
 };

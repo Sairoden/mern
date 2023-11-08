@@ -1,6 +1,9 @@
 // React & Libraries
 import { useParams } from "react-router-dom";
 
+// Styles
+import "../ui/PlaceForm/PlaceForm.css";
+
 // UI Components
 import { Input, Button } from "../ui";
 
@@ -49,7 +52,7 @@ function UpdatePlace() {
     );
 
   return (
-    <form>
+    <form className="place-form">
       <Input
         id="address"
         type="text"
