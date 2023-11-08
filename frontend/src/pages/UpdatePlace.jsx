@@ -1,4 +1,5 @@
 // React & Libraries
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 // Styles
@@ -43,22 +44,44 @@ const DUMMY_PLACES = [
 ];
 
 function UpdatePlace() {
+  const [isLoading, setIsLoading] = useState(true);
   const { placeId } = useParams();
-  const identifiedPlace = DUMMY_PLACES.find(place => place.id === placeId);
 
-  const [formState, inputHandler] = useForm(
+  const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
-        value: identifiedPlace.title,
-        isValid: true,
+        value: "",
+        isValid: false,
       },
       description: {
-        value: identifiedPlace.description,
-        isValid: true,
+        value: "",
+        isValid: false,
       },
     },
-    true
+    false
   );
+
+  const identifiedPlace = DUMMY_PLACES.find(place => place.id === placeId);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    setFormData(
+      {
+        title: {
+          value: identifiedPlace.title,
+          isValid: true,
+        },
+        description: {
+          value: identifiedPlace.description,
+          isValid: true,
+        },
+      },
+      true
+    );
+
+    setIsLoading(false);
+  }, [identifiedPlace.description, identifiedPlace.title, setFormData]);
 
   const placeUpdateSubmitHandler = e => {
     e.preventDefault();
@@ -70,6 +93,13 @@ function UpdatePlace() {
     return (
       <div className="center">
         <h2>Could not find place!</h2>;
+      </div>
+    );
+
+  if (isLoading)
+    return (
+      <div className="center">
+        <h2>Loading...</h2>
       </div>
     );
 
