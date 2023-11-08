@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import "../ui/PlaceForm/PlaceForm.css";
 
 // UI Components
-import { Input, Button } from "../ui";
+import { Input, Button, Card } from "../ui";
 
 // Utilities
 import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../utils";
@@ -30,7 +30,7 @@ const DUMMY_PLACES = [
   },
   {
     id: "p2",
-    title: "Manila",
+    title: "England",
     description: "Stinky place and I don't want to work here",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/f/f1/Manila_Harbour_View_by_night_%28Thomas_Yie%29_-_Flickr.jpg",
@@ -66,22 +66,24 @@ function UpdatePlace() {
   useEffect(() => {
     setIsLoading(true);
 
-    setFormData(
-      {
-        title: {
-          value: identifiedPlace.title,
-          isValid: true,
+    if (identifiedPlace) {
+      setFormData(
+        {
+          title: {
+            value: identifiedPlace.title,
+            isValid: true,
+          },
+          description: {
+            value: identifiedPlace.description,
+            isValid: true,
+          },
         },
-        description: {
-          value: identifiedPlace.description,
-          isValid: true,
-        },
-      },
-      true
-    );
+        true
+      );
+    }
 
     setIsLoading(false);
-  }, [identifiedPlace.description, identifiedPlace.title, setFormData]);
+  }, [identifiedPlace, setFormData]);
 
   const placeUpdateSubmitHandler = e => {
     e.preventDefault();
@@ -92,7 +94,9 @@ function UpdatePlace() {
   if (!identifiedPlace)
     return (
       <div className="center">
-        <h2>Could not find place!</h2>;
+        <Card>
+          <h2>Could not find place!</h2>
+        </Card>
       </div>
     );
 
@@ -135,5 +139,3 @@ function UpdatePlace() {
 }
 
 export default UpdatePlace;
-
-// weweewewe

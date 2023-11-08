@@ -5,7 +5,7 @@ import "./PlaceList.css";
 import { PlaceItem } from "../../index";
 
 // UI Components
-import { Card } from "../../../ui";
+import { Card, Button } from "../../../ui";
 
 function PlaceList({ items }) {
   if (items.length === 0)
@@ -13,7 +13,7 @@ function PlaceList({ items }) {
       <div className="place-list center">
         <Card>
           <h2>No places found. Maybe create one?</h2>
-          <button>Share Place</button>
+          <Button to="/places/new">Share Place</Button>
         </Card>
       </div>
     );

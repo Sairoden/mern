@@ -20,7 +20,7 @@ const DUMMY_PLACES = [
   },
   {
     id: "p2",
-    title: "Manila",
+    title: "England",
     description: "Stinky place and I don't want to work here",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/f/f1/Manila_Harbour_View_by_night_%28Thomas_Yie%29_-_Flickr.jpg",
