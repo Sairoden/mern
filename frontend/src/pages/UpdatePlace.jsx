@@ -10,6 +10,9 @@ import { Input, Button } from "../ui";
 // Utilities
 import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../utils";
 
+// Hooks
+import { useForm } from "../hooks";
+
 const DUMMY_PLACES = [
   {
     id: "p1",
@@ -41,8 +44,27 @@ const DUMMY_PLACES = [
 
 function UpdatePlace() {
   const { placeId } = useParams();
-
   const identifiedPlace = DUMMY_PLACES.find(place => place.id === placeId);
+
+  const [formState, inputHandler] = useForm(
+    {
+      title: {
+        value: identifiedPlace.title,
+        isValid: true,
+      },
+      description: {
+        value: identifiedPlace.description,
+        isValid: true,
+      },
+    },
+    true
+  );
+
+  const placeUpdateSubmitHandler = e => {
+    e.preventDefault();
+
+    console.log(formState.inputs);
+  };
 
   if (!identifiedPlace)
     return (
@@ -52,17 +74,17 @@ function UpdatePlace() {
     );
 
   return (
-    <form className="place-form">
+    <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
       <Input
-        id="address"
+        id="title"
         type="text"
         element="input"
         label="Title"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid title."
-        onInput={() => {}}
-        value={identifiedPlace.title}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.title.value}
+        initialValid={formState.inputs.title.isValid}
       />
       <Input
         id="description"
@@ -70,12 +92,12 @@ function UpdatePlace() {
         label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description (min. 5 characters)."
-        onInput={() => {}}
-        value={identifiedPlace.title}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.description.value}
+        initialValid={formState.inputs.description.isValid}
       />
 
-      <Button type="submit" disabled={true}>
+      <Button type="submit" disabled={!formState.isValid}>
         UPDATE PLACE
       </Button>
     </form>
