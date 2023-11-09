@@ -17,7 +17,12 @@ import {
 // Hooks
 import { useForm } from "../../hooks";
 
+// Contexts
+import { useAuthContext } from "../../contexts/auth_context";
+
 function AuthForm() {
+  const { login, logout } = useAuthContext();
+
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -37,6 +42,7 @@ function AuthForm() {
     e.preventDefault();
 
     console.log(formState.inputs);
+    login();
   };
 
   const switchModeHandler = () => {
@@ -97,17 +103,14 @@ function AuthForm() {
           errorText="Please enter a valid password (at least 5 chars.)"
           onInput={inputHandler}
         />
-        <Button
-          type="submit"
-          disabled={!formState.isValid}
-          onClick={switchModeHandler}
-        >
+        <Button type="submit" disabled={!formState.isValid}>
           {isLoginMode ? "LOGIN" : "SIGNUP"}
         </Button>
-        <Button inverse onClick={switchModeHandler}>
-          SWITCH TO SIGNUP
-        </Button>
       </form>
+
+      <Button inverse onClick={switchModeHandler}>
+        SWITCH TO {isLoginMode ? "SIGNUP" : "LOGIN"}
+      </Button>
     </Card>
   );
 }

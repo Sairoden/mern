@@ -11,7 +11,11 @@ import { Users, NewPlace, UserPlaces, UpdatePlace, Auth } from "./pages";
 // Features Components
 import { MainNavigation } from "./features";
 
-import Map from "./ui/Map/Map";
+// UI Components
+import { Map } from "./ui";
+
+// Contexts
+import { AuthProvider } from "./contexts/auth_context";
 
 function App() {
   const router = createBrowserRouter([
@@ -50,9 +54,15 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </>
+  );
 }
 
 export default App;
 
-// 71
+// 73

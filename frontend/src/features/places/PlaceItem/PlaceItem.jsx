@@ -7,6 +7,9 @@ import "./PlaceItem.css";
 // UI Components
 import { Card, Button, Modal, Map } from "../../../ui";
 
+// Contexts
+import { useAuthContext } from "../../../contexts/auth_context";
+
 function PlaceItem({
   id,
   image,
@@ -18,6 +21,8 @@ function PlaceItem({
 }) {
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const { isLoggedIn } = useAuthContext();
 
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
@@ -90,10 +95,15 @@ function PlaceItem({
             <Button onClick={openMapHandler} inverse>
               VIEW ON MAP
             </Button>
-            <Button to={`/places/${id}`}>EDIT</Button>
-            <Button danger onClick={showDeleteWarningHandler}>
-              DELETE
-            </Button>
+
+            {isLoggedIn && (
+              <>
+                <Button to={`/places/${id}`}>EDIT</Button>
+                <Button danger onClick={showDeleteWarningHandler}>
+                  DELETE
+                </Button>
+              </>
+            )}
           </div>
         </Card>
       </li>
