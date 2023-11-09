@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 // Pages
-import { Users, NewPlace, UserPlaces, UpdatePlace } from "./pages";
+import { Users, NewPlace, UserPlaces, UpdatePlace, Auth } from "./pages";
 
 // Features Components
 import { MainNavigation } from "./features";
@@ -39,6 +39,10 @@ function App() {
           element: <UpdatePlace />,
         },
         {
+          path: "/auth",
+          element: <Auth />,
+        },
+        {
           path: "*",
           element: <Navigate to="/" replace />,
         },
@@ -51,4 +55,4 @@ function App() {
 
 export default App;
 
-// 65
+// 71

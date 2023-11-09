@@ -6,5 +6,16 @@ import Modal from "./Modal/Modal";
 import Map from "./Map/Map";
 import Input from "./Input/Input";
 import PlaceForm from "./PlaceForm/PlaceForm";
+import AuthForm from "./AuthForm/AuthForm";
 
-export { Avatar, Card, Backdrop, Button, Modal, Map, Input, PlaceForm };
+export {
+  Avatar,
+  Card,
+  Backdrop,
+  Button,
+  Modal,
+  Map,
+  Input,
+  PlaceForm,
+  AuthForm,
+};
