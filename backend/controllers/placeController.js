@@ -1,3 +1,6 @@
+// Libraries
+const { v4: uuidv4 } = require("uuid");
+
 // Models
 const DUMMY_PLACES = require("../models/placeModel");
 
@@ -5,7 +8,7 @@ const DUMMY_PLACES = require("../models/placeModel");
 const { HttpError } = require("../middlewares");
 
 const getAllPlaces = async (req, res, next) => {
-  return res.status(200).send({ message: "GET ALL PLACES" });
+  return res.status(200).send({ places: DUMMY_PLACES });
 };
 
 const getSinglePlace = async (req, res, next) => {
@@ -22,17 +25,43 @@ const getSinglePlace = async (req, res, next) => {
     return next(error);
   }
 
-  return res.status(200).send({ message: "GET PLACE", place });
+  return res.status(200).send({ place });
 };
 
-const createPlace = async (req, res, next) => {
-  const { id, title, description, location, creator } = req.body;
+const createPlace = async (req, res) => {
+  const { title, description, address, location, creator } = req.body;
 
-  const newPlace = { id, title, description, location, creator };
+  const newPlace = {
+    id: uuidv4(),
+    title,
+    description,
+    address,
+    location,
+    creator,
+  };
 
   DUMMY_PLACES.push(newPlace);
 
-  return res.status(200).send({ message: "CREATE PLACE", newPlace });
+  return res.status(201).send({ place: newPlace });
+};
+
+const updatePlace = async (req, res) => {
+  const { title, description } = req.body;
+  const placeId = req.params.pid;
+
+  const updatedPlace = DUMMY_PLACES.find(place => place.id === placeId);
+  const placeIndex = DUMMY_PLACES.findIndex(place => place.id === placeId);
+
+  updatedPlace.title = title;
+  updatedPlace.description = description;
+
+  DUMMY_PLACES[placeIndex] = updatedPlace;
+
+  return res.status(200).send({ place: updatedPlace });
+};
+
+const deletePlace = async (req, res) => {
+  return res.status(200).send({ message: "DELETED" });
 };
 
 const getAllPlacesUser = async (req, res, next) => {
@@ -49,9 +78,7 @@ const getAllPlacesUser = async (req, res, next) => {
     return next(error);
   }
 
-  return res
-    .status(200)
-    .send({ message: "GET ALL PLACES USER", place: userPlace });
+  return res.status(200).send({ place: userPlace });
 };
 
 module.exports = {
@@ -59,4 +86,6 @@ module.exports = {
   getSinglePlace,
   createPlace,
   getAllPlacesUser,
+  updatePlace,
+  deletePlace,
 };

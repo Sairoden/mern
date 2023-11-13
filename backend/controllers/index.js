@@ -4,6 +4,8 @@ const {
   getSinglePlace,
   createPlace,
   getAllPlacesUser,
+  updatePlace,
+  deletePlace,
 } = require("./placeController");
 
 module.exports = {
@@ -11,4 +13,6 @@ module.exports = {
   getSinglePlace,
   createPlace,
   getAllPlacesUser,
+  updatePlace,
+  deletePlace,
 };
