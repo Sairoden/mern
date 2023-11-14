@@ -3,16 +3,22 @@ const {
   getAllPlaces,
   getSinglePlace,
   createPlace,
-  getAllPlacesUser,
+  getPlacesByUser,
   updatePlace,
   deletePlace,
 } = require("./placeController");
+
+// User Controllers
+const { getAllUsers, signup, login } = require("./userController");
 
 module.exports = {
   getAllPlaces,
   getSinglePlace,
   createPlace,
-  getAllPlacesUser,
+  getPlacesByUser,
   updatePlace,
   deletePlace,
+  getAllUsers,
+  signup,
+  login,
 };

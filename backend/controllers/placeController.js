@@ -2,13 +2,26 @@
 const { v4: uuidv4 } = require("uuid");
 
 // Models
-const DUMMY_PLACES = require("../models/placeModel");
+let DUMMY_PLACES = [
+  {
+    id: "p1",
+    title: "Manila City",
+    description: "One of the oldest cities in the world",
+    location: {
+      lat: 14.5973628,
+      lng: 120.98013,
+    },
+    creator: "u1",
+  },
+];
 
 // Middlewares
 const { HttpError } = require("../middlewares");
 
 const getAllPlaces = async (req, res, next) => {
-  return res.status(200).send({ places: DUMMY_PLACES });
+  return res
+    .status(200)
+    .send({ places: DUMMY_PLACES, count: DUMMY_PLACES.length });
 };
 
 const getSinglePlace = async (req, res, next) => {
@@ -61,31 +74,35 @@ const updatePlace = async (req, res) => {
 };
 
 const deletePlace = async (req, res) => {
-  return res.status(200).send({ message: "DELETED" });
+  const placeId = req.params.pid;
+
+  DUMMY_PLACES = DUMMY_PLACES.filter(place => place.id !== placeId);
+
+  return res.status(200).send({ message: "Deleted place" });
 };
 
-const getAllPlacesUser = async (req, res, next) => {
+const getPlacesByUser = async (req, res, next) => {
   const userId = req.params.uid;
 
-  const userPlace = DUMMY_PLACES.find(place => place.creator === userId);
+  const userPlaces = DUMMY_PLACES.filter(place => place.creator === userId);
 
-  if (!userPlace) {
+  if (!userPlaces || userPlaces.length === 0) {
     const error = new HttpError(
-      "Could not find a place for the provided user id",
+      "Could not find places for the provided user id",
       404
     );
 
     return next(error);
   }
 
-  return res.status(200).send({ place: userPlace });
+  return res.status(200).send({ place: userPlaces });
 };
 
 module.exports = {
   getAllPlaces,
   getSinglePlace,
   createPlace,
-  getAllPlacesUser,
+  getPlacesByUser,
   updatePlace,
   deletePlace,
 };

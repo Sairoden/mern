@@ -8,18 +8,18 @@ const {
   getSinglePlace,
   createPlace,
   updatePlace,
-  getAllPlacesUser,
+  getPlacesByUser,
   deletePlace,
 } = require("../controllers");
 
+// Routes
 router.route("/").get(getAllPlaces).post(createPlace);
-
 router
   .route("/:pid")
   .get(getSinglePlace)
   .patch(updatePlace)
   .delete(deletePlace);
 
-router.route("/user/:uid").get(getAllPlacesUser);
+router.route("/user/:uid").get(getPlacesByUser);
 
 module.exports = router;
