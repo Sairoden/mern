@@ -1,3 +1,6 @@
+// Libraries
+const { check } = require("express-validator");
+
 // Express
 const express = require("express");
 const router = express.Router();
@@ -13,7 +16,17 @@ const {
 } = require("../controllers");
 
 // Routes
-router.route("/").get(getAllPlaces).post(createPlace);
+router
+  .route("/")
+  .get(getAllPlaces)
+  .post(
+    [
+      check("title").not().isEmpty(),
+      check("description").isLength({ min: 5 }),
+      check("address").not().isEmpty(),
+    ],
+    createPlace
+  );
 router
   .route("/:pid")
   .get(getSinglePlace)

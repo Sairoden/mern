@@ -1,5 +1,6 @@
 // Libraries
 const { v4: uuidv4 } = require("uuid");
+const { validationResult } = require("express-validator");
 
 // Models
 let DUMMY_PLACES = [
@@ -41,7 +42,19 @@ const getSinglePlace = async (req, res, next) => {
   return res.status(200).send({ place });
 };
 
-const createPlace = async (req, res) => {
+const createPlace = async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    const error = new HttpError(
+      "Invalid inputs passed, please check your data",
+      422
+    );
+    
+    return next(error);
+  }
+
   const { title, description, address, location, creator } = req.body;
 
   const newPlace = {
