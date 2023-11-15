@@ -30,7 +30,10 @@ router
 router
   .route("/:pid")
   .get(getSinglePlace)
-  .patch(updatePlace)
+  .patch(
+    [check("title").not().isEmpty(), check("description").isLength({ min: 5 })],
+    updatePlace
+  )
   .delete(deletePlace);
 
 router.route("/user/:uid").get(getPlacesByUser);

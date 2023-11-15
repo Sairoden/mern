@@ -51,7 +51,7 @@ const createPlace = async (req, res, next) => {
       "Invalid inputs passed, please check your data",
       422
     );
-    
+
     return next(error);
   }
 
@@ -71,7 +71,19 @@ const createPlace = async (req, res, next) => {
   return res.status(201).send({ place: newPlace });
 };
 
-const updatePlace = async (req, res) => {
+const updatePlace = async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    const error = new HttpError(
+      "Invalid inputs passed, please check your data",
+      422
+    );
+
+    return next(error);
+  }
+
   const { title, description } = req.body;
   const placeId = req.params.pid;
 
@@ -86,8 +98,14 @@ const updatePlace = async (req, res) => {
   return res.status(200).send({ place: updatedPlace });
 };
 
-const deletePlace = async (req, res) => {
-  const placeId = req.params.pid;
+const deletePlace = async (req, res, next) => {
+  const placeId = req.params.pid;    
+
+  if (!DUMMY_PLACES.find(place => place.id === placeId)) {
+    const error = new HttpError("Could not find a place for that id", 404);
+
+    return next(error);
+  }
 
   DUMMY_PLACES = DUMMY_PLACES.filter(place => place.id !== placeId);
 
