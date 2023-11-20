@@ -19,6 +19,9 @@ let DUMMY_PLACES = [
 // Middlewares
 const { HttpError } = require("../middlewares");
 
+// Utils
+const { getCoordsForAddress } = require("../utils");
+
 const getAllPlaces = async (req, res, next) => {
   return res
     .status(200)
@@ -55,7 +58,18 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  const { title, description, address, location, creator } = req.body;
+  const { title, description, address, creator } = req.body;
+
+  let location;
+  try {
+    location = await getCoordsForAddress(address);
+    location = {
+      lat: location.lat,
+      lng: location.lon,
+    };
+  } catch (err) {
+    next(err);
+  }
 
   const newPlace = {
     id: uuidv4(),
@@ -99,7 +113,7 @@ const updatePlace = async (req, res, next) => {
 };
 
 const deletePlace = async (req, res, next) => {
-  const placeId = req.params.pid;    
+  const placeId = req.params.pid;
 
   if (!DUMMY_PLACES.find(place => place.id === placeId)) {
     const error = new HttpError("Could not find a place for that id", 404);

@@ -1,7 +1,17 @@
 // Libraries
 const app = require("./app");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-const PORT = 3000;
+// Environment Variable Set Up (ENV)
+dotenv.config({ path: "./.env" });
+
+mongoose
+  .connect(`${process.env.MONGO_URI}`)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(err));
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Listening on PORT: ${PORT}`);
