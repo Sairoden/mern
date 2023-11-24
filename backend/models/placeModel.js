@@ -1,14 +1,17 @@
-let DUMMY_PLACES = [
-  {
-    id: "p1",
-    title: "Manila City",
-    description: "One of the oldest cities in the world",
-    location: {
-      lat: 14.5973628,
-      lng: 120.98013,
-    },
-    creator: "u1",
-  },
-];
+const mongoose = require("mongoose");
 
-module.exports = DUMMY_PLACES;
+const placeSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  image: { type: String, required: true },
+  address: { type: String, required: true },
+  location: {
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true },
+  },
+  creator: { type: String, required: true },
+});
+
+const placeModel = mongoose.model("Place", placeSchema);
+
+module.exports = placeModel;
