@@ -154,17 +154,21 @@ const updatePlace = async (req, res, next) => {
 };
 
 const deletePlace = async (req, res, next) => {
-  const placeId = req.params.pid;
+  try {
+    const placeId = req.params.pid;
 
-  if (!DUMMY_PLACES.find(place => place.id === placeId)) {
-    const error = new HttpError("Could not find a place for that id", 404);
+    const place = await placeModel.findByIdAndDelete(placeId);
 
-    return next(error);
+    if (!place) {
+      const error = new HttpError("Could not find a place for that id", 404);
+
+      return next(error);
+    }
+
+    return res.status(200).send({ message: "Deleted place" });
+  } catch (err) {
+    next(err);
   }
-
-  DUMMY_PLACES = DUMMY_PLACES.filter(place => place.id !== placeId);
-
-  return res.status(200).send({ message: "Deleted place" });
 };
 
 module.exports = {
