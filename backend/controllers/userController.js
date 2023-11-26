@@ -9,10 +9,10 @@ const { userModel } = require("../models");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await userModel.find();
+    const users = await userModel.find().select("-password ");
 
     if (!users) {
-      const error = new HttpError("No users at the moment.", 400);
+      const error = new HttpError("No users at the moment.", 500);
 
       return next(error);
     }
@@ -36,12 +36,12 @@ const signup = async (req, res, next) => {
       return next(error);
     }
 
-    const { name, email, password, places } = req.body;
+    const { name, email, password } = req.body;
 
     const existingUser = await userModel.findOne({ email });
 
     if (existingUser) {
-      const error = new HttpError("Email alreay exists", 422);
+      const error = new HttpError("Email already exists", 422);
       return next(error);
     }
 
@@ -52,7 +52,7 @@ const signup = async (req, res, next) => {
       image:
         "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
       password,
-      places,
+      places: [],
     });
 
     if (!newUser) {
@@ -68,18 +68,22 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const validUser = DUMMY_USERS.find(
-    user => user.email === email && user.password === password
-  );
+    const user = await userModel.findOne({ email });
 
-  if (!validUser) {
-    const error = new HttpError("Invalid credentials", 401);
-    return next(error);
-  }
+    if (!user || user.password !== password) {
+      const error = new HttpError(
+        "Logging in failed, could not log you in.",
+        401
+      );
 
-  return res.status(200).send({ message: "Logged in" });
+      return next(error);
+    }
+
+    return res.status(200).send({ user });
+  } catch (err) {}
 };
 
 module.exports = {
