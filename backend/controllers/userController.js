@@ -9,7 +9,10 @@ const { userModel } = require("../models");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await userModel.find().select("-password ");
+    const users = await userModel
+      .find()
+      .select("-password")
+      .populate({ path: "places", select: "title description" });
 
     if (!users) {
       const error = new HttpError("No users at the moment.", 500);
@@ -86,8 +89,25 @@ const login = async (req, res, next) => {
   } catch (err) {}
 };
 
+const deleteUser = async (req, res, next) => {
+  try {
+    const user = await userModel.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      const error = new HttpError("No matching ID found", 500);
+
+      return next(error);
+    }
+
+    return res.status(200).send({ user });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAllUsers,
   signup,
   login,
+  deleteUser,
 };

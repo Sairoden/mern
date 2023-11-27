@@ -6,9 +6,10 @@ const express = require("express");
 const router = express.Router();
 
 // Controllers
-const { getAllUsers, signup, login } = require("../controllers");
+const { getAllUsers, signup, login, deleteUser } = require("../controllers");
 
 router.get("/", getAllUsers);
+router.delete("/:id", deleteUser);
 router.post(
   "/signup",
   [

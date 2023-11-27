@@ -2,7 +2,7 @@
 const { validationResult } = require("express-validator");
 
 // Models
-const { placeModel } = require("../models");
+const { placeModel, userModel } = require("../models");
 
 // Middlewares
 const { HttpError } = require("../middlewares");
@@ -12,7 +12,9 @@ const { getCoordsForAddress } = require("../utils");
 
 const getAllPlaces = async (req, res, next) => {
   try {
-    const places = await placeModel.find();
+    const places = await placeModel
+      .find()
+      .populate({ path: "creator", select: "-places" });
 
     if (!places) {
       const error = new HttpError("No places found", 422);
@@ -29,7 +31,9 @@ const getSinglePlace = async (req, res, next) => {
   try {
     const placeId = req.params.pid;
 
-    const place = await placeModel.findById(placeId);
+    const place = await placeModel
+      .findById(placeId)
+      .populate({ path: "creator", select: "-places" });
 
     if (!place) {
       const error = new HttpError(
@@ -91,6 +95,14 @@ const createPlace = async (req, res, next) => {
       lng: location.lon,
     };
 
+    const user = await userModel.findById(creator);
+
+    if (!user) {
+      const error = new HttpError("Could not find user for provided id", 404);
+
+      return next(error);
+    }
+
     const newPlace = await placeModel.create({
       title,
       description,
@@ -101,8 +113,11 @@ const createPlace = async (req, res, next) => {
       creator,
     });
 
+    user.places.push(newPlace);
+
+    await user.save();
+
     if (!newPlace) {
-      console.error(errors);
       const error = new HttpError(
         "Creating a new place failed, please try again",
         500

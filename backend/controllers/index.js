@@ -9,7 +9,7 @@ const {
 } = require("./placeController");
 
 // User Controllers
-const { getAllUsers, signup, login } = require("./userController");
+const { getAllUsers, signup, login, deleteUser } = require("./userController");
 
 module.exports = {
   getAllPlaces,
@@ -21,4 +21,5 @@ module.exports = {
   getAllUsers,
   signup,
   login,
+  deleteUser,
 };
