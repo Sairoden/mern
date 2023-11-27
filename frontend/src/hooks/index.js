@@ -1,3 +1,6 @@
 import { useForm } from "./useForm";
 
-export { useForm };
+// AUTH
+import { useSignup } from "./auth/useSignup";
+
+export { useForm, useSignup };

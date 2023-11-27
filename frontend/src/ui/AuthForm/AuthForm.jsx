@@ -15,13 +15,14 @@ import {
 } from "../../utils";
 
 // Hooks
-import { useForm } from "../../hooks";
+import { useForm, useSignup } from "../../hooks";
 
 // Contexts
 import { useAuthContext } from "../../contexts/auth_context";
 
 function AuthForm() {
   const { login, logout } = useAuthContext();
+  const { signup, isPending } = useSignup();
 
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formState, inputHandler, setFormData] = useForm(
@@ -41,8 +42,15 @@ function AuthForm() {
   const authSubmitHandler = e => {
     e.preventDefault();
 
-    console.log(formState.inputs);
-    login();
+    if (isLoginMode) {
+      login();
+    } else {
+      signup({
+        name: formState.inputs.name.value,
+        email: formState.inputs.email.value,
+        password: formState.inputs.password.value,
+      });
+    }
   };
 
   const switchModeHandler = () => {
@@ -83,6 +91,7 @@ function AuthForm() {
             validators={[VALIDATOR_REQUIRE()]}
             errorText="Please enter a name"
             onInput={inputHandler}
+            disabled={isPending}
           />
         )}
         <Input
@@ -93,6 +102,7 @@ function AuthForm() {
           validators={[VALIDATOR_EMAIL()]}
           errorText="Please enter a valid email address"
           onInput={inputHandler}
+          disabled={isPending}
         />
         <Input
           id="password"
@@ -102,8 +112,9 @@ function AuthForm() {
           validators={[VALIDATOR_MINLENGTH(5)]}
           errorText="Please enter a valid password (at least 5 chars.)"
           onInput={inputHandler}
+          disabled={isPending}
         />
-        <Button type="submit" disabled={!formState.isValid}>
+        <Button type="submit" disabled={!formState.isValid || isPending}>
           {isLoginMode ? "LOGIN" : "SIGNUP"}
         </Button>
       </form>
