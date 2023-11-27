@@ -11,7 +11,7 @@ export const login = async ({ email, password }) => {
   });
   const data = await res.json();
 
-  if (!data) throw new Error("Couldn't sign up. Please try again");
+  if (!data || !res.ok) throw new Error("Couldn't login. Please try again");
 
   return data;
 };

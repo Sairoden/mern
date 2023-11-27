@@ -5,7 +5,7 @@ import { useState } from "react";
 import "./AuthForm.css";
 
 // UI Components
-import { Card, Input, Button } from "../index";
+import { Card, Input, Button, LoadingSpinner } from "../index";
 
 // Utilities
 import {
@@ -15,14 +15,11 @@ import {
 } from "../../utils";
 
 // Hooks
-import { useForm, useSignup } from "../../hooks";
-
-// Contexts
-import { useAuthContext } from "../../contexts/auth_context";
+import { useForm, useSignup, useLogin } from "../../hooks";
 
 function AuthForm() {
-  const { login, logout } = useAuthContext();
   const { signup, isPending } = useSignup();
+  const { login, isPending: isPendingLogin } = useLogin();
 
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formState, inputHandler, setFormData] = useForm(
@@ -43,7 +40,10 @@ function AuthForm() {
     e.preventDefault();
 
     if (isLoginMode) {
-      login();
+      login({
+        email: formState.inputs.email.value,
+        password: formState.inputs.password.value,
+      });
     } else {
       signup({
         name: formState.inputs.name.value,
@@ -79,6 +79,8 @@ function AuthForm() {
 
   return (
     <Card className="authentication">
+      {isPending && <LoadingSpinner asOverlay />}
+      {isPendingLogin && <LoadingSpinner asOverlay />}
       <h2>Login Required</h2>
       <hr />
       <form onSubmit={authSubmitHandler}>
@@ -91,7 +93,7 @@ function AuthForm() {
             validators={[VALIDATOR_REQUIRE()]}
             errorText="Please enter a name"
             onInput={inputHandler}
-            disabled={isPending}
+            disabled={isPending || isPendingLogin}
           />
         )}
         <Input
@@ -102,7 +104,7 @@ function AuthForm() {
           validators={[VALIDATOR_EMAIL()]}
           errorText="Please enter a valid email address"
           onInput={inputHandler}
-          disabled={isPending}
+          disabled={isPending || isPendingLogin}
         />
         <Input
           id="password"
@@ -112,9 +114,12 @@ function AuthForm() {
           validators={[VALIDATOR_MINLENGTH(5)]}
           errorText="Please enter a valid password (at least 5 chars.)"
           onInput={inputHandler}
-          disabled={isPending}
+          disabled={isPending || isPendingLogin}
         />
-        <Button type="submit" disabled={!formState.isValid || isPending}>
+        <Button
+          type="submit"
+          disabled={!formState.isValid || isPending || isPendingLogin}
+        >
           {isLoginMode ? "LOGIN" : "SIGNUP"}
         </Button>
       </form>

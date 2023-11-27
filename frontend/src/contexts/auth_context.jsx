@@ -9,8 +9,8 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
+  const login = useCallback(data => {
+    setIsLoggedIn(data);
   }, []);
 
   const logout = useCallback(() => {

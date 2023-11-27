@@ -7,6 +7,7 @@ import Map from "./Map/Map";
 import Input from "./Input/Input";
 import PlaceForm from "./PlaceForm/PlaceForm";
 import AuthForm from "./AuthForm/AuthForm";
+import LoadingSpinner from "./LoadingSpinner/LoadingSpinner";
 
 export {
   Avatar,
@@ -18,4 +19,5 @@ export {
   Input,
   PlaceForm,
   AuthForm,
+  LoadingSpinner,
 };
